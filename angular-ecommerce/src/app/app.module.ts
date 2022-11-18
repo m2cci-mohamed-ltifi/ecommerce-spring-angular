@@ -7,9 +7,10 @@ import { AppComponent } from './app.component';
 import { ProductListComponent } from './Components/product-list/product-list.component';
 import { ProductService } from './services/product.service';
 import { ProductCategoryMenuComponent } from './Components/product-category-menu/product-category-menu.component';
-import { SearchComponent } from './components/search/search.component';
+import { SearchComponent } from './Components/search/search.component';
 
 const routes: Routes = [
+  {path: 'search/:keyword', component: ProductListComponent},
   {path: 'category/:id/:name',component: ProductListComponent},
   {path: 'category',component: ProductListComponent},
   {path: 'products',component: ProductListComponent},
