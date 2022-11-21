@@ -16,6 +16,8 @@ const routes: Routes = [
   {path: 'category/:id/:name',component: ProductListComponent},
   {path: 'category',component: ProductListComponent},
   {path: 'products',component: ProductListComponent},
+  {path: '',component: ProductListComponent, pathMatch:'full'},
+  {path: '**',component: ProductListComponent, pathMatch:'full'},
   
 ];
 @NgModule({
