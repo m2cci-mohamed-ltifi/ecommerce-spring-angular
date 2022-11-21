@@ -11,8 +11,14 @@ import { ActivatedRoute } from '@angular/router';
 export class ProductListComponent implements OnInit{
   products: Product[]=[];
   currentCategoryId: number=1;
+  previousCategoryId: number=1;
   currentCategoryName!: string;
-  searchMode!: boolean;
+  searchMode: boolean=false;
+
+  //pagination properties
+  thePageNumber: number=1;
+  thePageSize = 5;
+  theTotalElements=1;
 
   constructor(private productService: ProductService,
       private route:ActivatedRoute){
@@ -39,12 +45,21 @@ export class ProductListComponent implements OnInit{
     this.currentCategoryName= this.route.snapshot.paramMap.get('name')!;
     } else {
       this.currentCategoryId=1;
-      this.currentCategoryName="books;"
+      this.currentCategoryName="books"
     }
-    this.productService.getProductList(this.currentCategoryId).subscribe(
-      data => {
-        this.products = data;
-      }
+
+    // Check of we have a different categotry than the previous one
+    // Note that Angular will reuse a component if it's currently viewed
+    if(this.previousCategoryId != this.currentCategoryId){
+      this.thePageNumber=1;
+    }
+    this.previousCategoryId=this.currentCategoryId;
+
+    console.log(`currectCategoryId: ${this.currentCategoryId}. thePageNumber=${this.thePageNumber}`);
+
+    // Get the products for the given category id
+    this.productService.getProductListPaginate(this.thePageNumber-1, this.thePageSize, this.currentCategoryId).subscribe(
+      this.processResult()
     )
   }
 
@@ -52,11 +67,23 @@ export class ProductListComponent implements OnInit{
     const theKeyword: string = this.route.snapshot.paramMap.get('keyword')!;
 
     //search for the product using keyword
-    this.productService.searchProducts(theKeyword).subscribe(
-      data => {
-        this.products = data;
-      }
+    this.productService.searchProductsPaginate(this.thePageNumber-1, this.thePageSize, theKeyword).subscribe(
+      this.processResult()
     )
+  }
+
+  processResult() {
+    return (data: any) => {
+        this.products = data._embedded.products;
+        this.thePageNumber=data.page.number + 1;
+        this.thePageSize =data.page.size;
+        this.theTotalElements = data.page.totalElements;
+      }
+  }
+  updatePageSize(pageSize: string){
+    this.thePageSize = +pageSize;
+    this.thePageNumber=1;
+    this.listProducts();
   }
 
   ngOnInit(): void {

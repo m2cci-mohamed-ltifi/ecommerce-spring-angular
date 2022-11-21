@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { Routes,RouterModule } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './Components/product-list/product-list.component';
@@ -9,6 +10,7 @@ import { ProductService } from './services/product.service';
 import { ProductCategoryMenuComponent } from './Components/product-category-menu/product-category-menu.component';
 import { SearchComponent } from './Components/search/search.component';
 import { ProductDetailsComponent } from './Components/product-details/product-details.component';
+import { CartStatusComponent } from './components/cart-status/cart-status.component';
 
 const routes: Routes = [
   {path: 'products/:id',component: ProductDetailsComponent},
@@ -26,12 +28,14 @@ const routes: Routes = [
     ProductListComponent,
     ProductCategoryMenuComponent,
     SearchComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    CartStatusComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [ProductService],
   bootstrap: [AppComponent]
