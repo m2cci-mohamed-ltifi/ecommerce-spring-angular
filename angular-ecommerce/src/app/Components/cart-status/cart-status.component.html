@@ -1,6 +1,9 @@
 <div class="cart-area d-n">
   <a href="shopping-detail.html">
-    <div class="total">190.22 <span> 3</span></div>
+    <div class="total">
+      {{ totalPrice | currency: "EUR":true }}
+      <span>{{ totalQuantity }}</span>
+    </div>
     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
   </a>
 </div>

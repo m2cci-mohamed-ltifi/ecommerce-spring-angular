@@ -14,7 +14,7 @@
               <h1>{{ tempProduct.name }}</h1>
             </a>
             <div class="price">
-              {{ tempProduct.unitPrice | currency: "USD" }}
+              {{ tempProduct.unitPrice | currency: "EUR":true }}
             </div>
             <button
               (click)="addToCart(tempProduct)"
