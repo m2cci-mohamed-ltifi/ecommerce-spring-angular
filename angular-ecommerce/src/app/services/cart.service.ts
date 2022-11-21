@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CartItem } from '../common/cart-item';
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +8,8 @@ import { Subject } from 'rxjs';
 export class CartService {
   cartItems: CartItem[] = [];
 
-  totalPrice: Subject<number> = new Subject<number>();
-  totalQuantity: Subject<number> = new Subject<number>();
+  totalPrice: ReplaySubject<number> = new ReplaySubject<number>();
+  totalQuantity: ReplaySubject<number> = new ReplaySubject<number>();
 
   constructor() {}
 
@@ -34,6 +34,34 @@ export class CartService {
     }
     this.computeCartTotals();
   }
+
+  removeFromCart(theCartItem: CartItem) {
+    // check if we already have the item on the cart
+    let itemIndex = -1;
+
+    if (this.cartItems.length > 0) {
+      // find the item in the cart based on item id
+      itemIndex = this.cartItems.findIndex(
+        (item) => item.id === theCartItem.id
+      )!;
+    }
+
+    // check if we found it
+    if (itemIndex > -1) {
+      this.cartItems.splice(itemIndex, 1);
+      this.computeCartTotals();
+    }
+  }
+  decrementQuantity(theCartItem: CartItem) {
+    theCartItem.quantity--;
+
+    if (theCartItem.quantity === 0) {
+      this.removeFromCart(theCartItem);
+    } else {
+      this.computeCartTotals();
+    }
+  }
+
   computeCartTotals() {
     let totalPriceValue: number = 0;
     let totalQuantityValue: number = 0;

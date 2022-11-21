@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { Routes,RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -10,18 +10,18 @@ import { ProductService } from './services/product.service';
 import { ProductCategoryMenuComponent } from './Components/product-category-menu/product-category-menu.component';
 import { SearchComponent } from './Components/search/search.component';
 import { ProductDetailsComponent } from './Components/product-details/product-details.component';
-import { CartStatusComponent } from './components/cart-status/cart-status.component';
-import { CartDetailsComponent } from './components/cart-details/cart-details.component';
+import { CartDetailsComponent } from './Components/cart-details/cart-details.component';
+import { CartStatusComponent } from './Components/cart-status/cart-status.component';
 
 const routes: Routes = [
-  {path: 'products/:id',component: ProductDetailsComponent},
-  {path: 'search/:keyword', component: ProductListComponent},
-  {path: 'category/:id/:name',component: ProductListComponent},
-  {path: 'category',component: ProductListComponent},
-  {path: 'products',component: ProductListComponent},
-  {path: '',component: ProductListComponent, pathMatch:'full'},
-  {path: '**',component: ProductListComponent, pathMatch:'full'},
-  
+  { path: 'cart-details', component: CartDetailsComponent },
+  { path: 'products/:id', component: ProductDetailsComponent },
+  { path: 'search/:keyword', component: ProductListComponent },
+  { path: 'category/:id/:name', component: ProductListComponent },
+  { path: 'category', component: ProductListComponent },
+  { path: 'products', component: ProductListComponent },
+  { path: '', component: ProductListComponent, pathMatch: 'full' },
+  { path: '**', component: ProductListComponent, pathMatch: 'full' },
 ];
 @NgModule({
   declarations: [
@@ -31,15 +31,15 @@ const routes: Routes = [
     SearchComponent,
     ProductDetailsComponent,
     CartStatusComponent,
-    CartDetailsComponent
+    CartDetailsComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
   ],
   providers: [ProductService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
