@@ -52,7 +52,7 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
         //create an array of entity types
         List<Class> entityClasses = new ArrayList<>();
 
-        //get the entity type for tje entities
+        //get the entity type for the entities
         for(EntityType tempEntityType: entities){
             entityClasses.add(tempEntityType.getJavaType());
         }

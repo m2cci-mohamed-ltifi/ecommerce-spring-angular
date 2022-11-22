@@ -37,14 +37,9 @@ export class CartService {
 
   removeFromCart(theCartItem: CartItem) {
     // check if we already have the item on the cart
-    let itemIndex = -1;
-
-    if (this.cartItems.length > 0) {
-      // find the item in the cart based on item id
-      itemIndex = this.cartItems.findIndex(
-        (item) => item.id === theCartItem.id
-      )!;
-    }
+    let itemIndex = this.cartItems.findIndex(
+      (item) => item.id === theCartItem.id
+    )!;
 
     // check if we found it
     if (itemIndex > -1) {
@@ -52,6 +47,7 @@ export class CartService {
       this.computeCartTotals();
     }
   }
+
   decrementQuantity(theCartItem: CartItem) {
     theCartItem.quantity--;
 
