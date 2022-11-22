@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Luv2shopFormService } from 'src/app/services/luv2shop-form.service';
 
 @Component({
   selector: 'app-checkout',
@@ -8,7 +9,20 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class CheckoutComponent implements OnInit {
   checkoutFormGroup!: FormGroup;
-  constructor(private formBuilder: FormBuilder) {}
+
+  billingAddressStates: any;
+  shippingAddressStates: any;
+
+  totalPrice: number = 0;
+  totalQuantity: number = 0;
+
+  creditCardYears: number[] = [];
+  creditCardMonths: number[] = [];
+
+  constructor(
+    private luvToShopFormService: Luv2shopFormService,
+    private formBuilder: FormBuilder
+  ) {}
   ngOnInit(): void {
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
@@ -36,8 +50,54 @@ export class CheckoutComponent implements OnInit {
         cardNumber: [''],
         securityCode: [''],
         expirationMonth: [''],
+        expirationYear: [''],
       }),
     });
+
+    let startMonth: number = new Date().getMonth();
+    this.luvToShopFormService
+      .getCreditCardYears()
+      .subscribe((data) => (this.creditCardYears = data));
+    this.luvToShopFormService
+      .getCreditCardMonths(startMonth)
+      .subscribe((data) => (this.creditCardMonths = data));
+  }
+
+  copyShippingAddressToBillingAddress(event) {
+    if (event.target.checked) {
+      this.checkoutFormGroup.controls['billingAdress'].setValue(
+        this.checkoutFormGroup.controls['shippingAdress'].value
+      );
+
+      // bug fix for states
+      this.billingAddressStates = this.shippingAddressStates;
+    } else {
+      this.checkoutFormGroup.controls['billingAdress'].reset();
+
+      // bug fix for states
+      this.billingAddressStates = [];
+    }
+  }
+
+  handleMonthsAndYears() {
+    const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
+
+    const currentYear = new Date().getFullYear();
+    const selectedYear = Number(creditCardFormGroup.value.expirationYear);
+
+    let startMonth: number;
+
+    if (currentYear === selectedYear) {
+      startMonth = new Date().getMonth() + 1;
+    } else {
+      startMonth = 1;
+    }
+    this.luvToShopFormService
+      .getCreditCardMonths(startMonth)
+      .subscribe((data) => {
+        console.log(data);
+        this.creditCardMonths = data;
+      });
   }
 
   onSubmit() {
