@@ -547,7 +547,7 @@ input.au-input.au-input-xl {
 }
 
 .main-content.page-m {
-    padding: 10% 15% !important
+    padding: 10% 30% 10% 5%
 }
 
 /* 
@@ -737,7 +737,7 @@ select {
 }
 
 table.table.table-bordered {
-    border: 1px solid #ccc;
+    border: 1px solid #d3d3d3;
     background: #fff
 }
 

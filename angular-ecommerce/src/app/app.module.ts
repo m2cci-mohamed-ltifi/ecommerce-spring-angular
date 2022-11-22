@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './Components/product-list/product-list.component';
@@ -12,8 +13,10 @@ import { SearchComponent } from './Components/search/search.component';
 import { ProductDetailsComponent } from './Components/product-details/product-details.component';
 import { CartDetailsComponent } from './Components/cart-details/cart-details.component';
 import { CartStatusComponent } from './Components/cart-status/cart-status.component';
+import { CheckoutComponent } from './Components/checkout/checkout.component';
 
 const routes: Routes = [
+  { path: 'checkout', component: CheckoutComponent },
   { path: 'cart-details', component: CartDetailsComponent },
   { path: 'products/:id', component: ProductDetailsComponent },
   { path: 'search/:keyword', component: ProductListComponent },
@@ -32,12 +35,14 @@ const routes: Routes = [
     ProductDetailsComponent,
     CartStatusComponent,
     CartDetailsComponent,
+    CheckoutComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
     HttpClientModule,
     NgbModule,
+    ReactiveFormsModule,
   ],
   providers: [ProductService],
   bootstrap: [AppComponent],

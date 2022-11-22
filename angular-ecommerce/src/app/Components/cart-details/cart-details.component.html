@@ -43,7 +43,7 @@
                       <i class="fas fa-minus"></i>
                     </button>
                   </div>
-                  <div class="col-8">
+                  <div class="col-md-8">
                     <button
                       (click)="removeItem(tempCartItem)"
                       class="btn btn-primary btn-sm"
@@ -68,6 +68,11 @@
               <p>Total Quantity: {{ totalQuantity }}</p>
               <p>Shippig: FREE</p>
               <p>Total price: {{ totalPrice | currency: "EUR" }}</p>
+              <div>
+                <button routerLink="/checkout" class="btn btn-primary">
+                  Checkout
+                </button>
+              </div>
             </td>
           </tr>
         </table>
