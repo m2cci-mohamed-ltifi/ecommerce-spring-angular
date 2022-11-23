@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name="adress")
+@Table(name="address")
 @Getter
 @Setter
 public class Address {
@@ -16,13 +16,13 @@ public class Address {
     @Column(name="id")
     private Long id;
 
-    @Column(name="first_name")
+    @Column(name="street")
     private String street;
 
-    @Column(name="last_nameame")
+    @Column(name="city")
     private String city;
 
-    @Column(name="email")
+    @Column(name="state")
     private String state;
 
     @Column(name="country")

@@ -38,7 +38,7 @@ public class Order {
     private Date dateCreated;
 
     @UpdateTimestamp
-    @Column(name="last-updated")
+    @Column(name="last_updated")
     private Date lastUpdated;
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "order")
@@ -54,7 +54,7 @@ public class Order {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="shipping_address_id")
-    private Address shippingAdress;
+    private Address shippingAddress;
 
     public void add(OrderItem item){
         if(item!=null){
