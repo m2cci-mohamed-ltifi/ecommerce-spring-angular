@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
+import { CartService } from 'src/app/services/cart.service';
 import { Luv2shopFormService } from 'src/app/services/luv2shop-form.service';
 import { Luv2ShopValidators } from 'src/app/validators/luv2-shop-validators';
 
@@ -32,9 +33,12 @@ export class CheckoutComponent implements OnInit {
 
   constructor(
     private luvToShopFormService: Luv2shopFormService,
+    private cartService: CartService,
     private formBuilder: FormBuilder
   ) {}
   ngOnInit(): void {
+    this.reviewCartDetails();
+
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('', [
@@ -53,7 +57,7 @@ export class CheckoutComponent implements OnInit {
           Luv2ShopValidators.notOnlyWhiteSpace,
         ]),
       }),
-      shippingAdress: this.formBuilder.group({
+      shippingAddress: this.formBuilder.group({
         street: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
@@ -72,7 +76,7 @@ export class CheckoutComponent implements OnInit {
           Luv2ShopValidators.notOnlyWhiteSpace,
         ]),
       }),
-      billingAdress: this.formBuilder.group({
+      billingAddress: this.formBuilder.group({
         street: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
@@ -125,6 +129,12 @@ export class CheckoutComponent implements OnInit {
       .getAllStates()
       .subscribe((data) => (this.states = data));
   }
+  reviewCartDetails() {
+    this.cartService.totalPrice.subscribe((data) => (this.totalPrice = data));
+    this.cartService.totalQuantity.subscribe(
+      (data) => (this.totalQuantity = data)
+    );
+  }
 
   get firstName() {
     return this.checkoutFormGroup.get('customer.firstName');
@@ -136,38 +146,38 @@ export class CheckoutComponent implements OnInit {
     return this.checkoutFormGroup.get('customer.email');
   }
 
-  //Shipping adress getters
-  get shippingAdressStreet() {
-    return this.checkoutFormGroup.get('shippingAdress.street');
+  //Shipping address getters
+  get shippingAddressStreet() {
+    return this.checkoutFormGroup.get('shippingAddress.street');
   }
-  get shippingAdressCity() {
-    return this.checkoutFormGroup.get('shippingAdress.city');
+  get shippingAddressCity() {
+    return this.checkoutFormGroup.get('shippingAddress.city');
   }
-  get shippingAdressState() {
-    return this.checkoutFormGroup.get('shippingAdress.state');
+  get shippingAddressState() {
+    return this.checkoutFormGroup.get('shippingAddress.state');
   }
-  get shippingAdressCountry() {
-    return this.checkoutFormGroup.get('shippingAdress.country');
+  get shippingAddressCountry() {
+    return this.checkoutFormGroup.get('shippingAddress.country');
   }
-  get shippingAdressZipCode() {
-    return this.checkoutFormGroup.get('shippingAdress.zipCode');
+  get shippingAddressZipCode() {
+    return this.checkoutFormGroup.get('shippingAddress.zipCode');
   }
-  //billing adress getters
+  //billing address getters
 
-  get billingAdressStreet() {
-    return this.checkoutFormGroup.get('billingAdress.street');
+  get billingAddressStreet() {
+    return this.checkoutFormGroup.get('billingAddress.street');
   }
-  get billingAdressCity() {
-    return this.checkoutFormGroup.get('billingAdress.city');
+  get billingAddressCity() {
+    return this.checkoutFormGroup.get('billingAddress.city');
   }
-  get billingAdressState() {
-    return this.checkoutFormGroup.get('billingAdress.state');
+  get billingAddressState() {
+    return this.checkoutFormGroup.get('billingAddress.state');
   }
-  get billingAdressCountry() {
-    return this.checkoutFormGroup.get('billingAdress.country');
+  get billingAddressCountry() {
+    return this.checkoutFormGroup.get('billingAddress.country');
   }
-  get billingAdressZipCode() {
-    return this.checkoutFormGroup.get('billingAdress.zipCode');
+  get billingAddressZipCode() {
+    return this.checkoutFormGroup.get('billingAddress.zipCode');
   }
 
   //Credit card getters
@@ -187,14 +197,14 @@ export class CheckoutComponent implements OnInit {
 
   copyShippingAddressToBillingAddress(event) {
     if (event.target.checked) {
-      this.checkoutFormGroup.controls['billingAdress'].setValue(
-        this.checkoutFormGroup.controls['shippingAdress'].value
+      this.checkoutFormGroup.controls['billingAddress'].setValue(
+        this.checkoutFormGroup.controls['shippingAddress'].value
       );
 
       // bug fix for states
       this.billingAddressStates = this.shippingAddressStates;
     } else {
-      this.checkoutFormGroup.controls['billingAdress'].reset();
+      this.checkoutFormGroup.controls['billingAddress'].reset();
 
       // bug fix for states
       this.billingAddressStates = [];
@@ -231,7 +241,7 @@ export class CheckoutComponent implements OnInit {
     console.log(formGroup);
 
     this.luvToShopFormService.getStates(countryCode).subscribe((data) => {
-      if (formGroupName === 'shippingAdress') {
+      if (formGroupName === 'shippingAddress') {
         this.shippingAddressStates = data;
       } else {
         this.billingAddressStates = data;
