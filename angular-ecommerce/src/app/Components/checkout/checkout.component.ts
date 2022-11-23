@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { Country } from 'src/app/common/country';
+import { State } from 'src/app/common/state';
 import { Luv2shopFormService } from 'src/app/services/luv2shop-form.service';
 
 @Component({
@@ -19,6 +26,9 @@ export class CheckoutComponent implements OnInit {
   creditCardYears: number[] = [];
   creditCardMonths: number[] = [];
 
+  countries: Country[] = [];
+  states: State[] = [];
+
   constructor(
     private luvToShopFormService: Luv2shopFormService,
     private formBuilder: FormBuilder
@@ -26,9 +36,18 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
-        firstName: [''],
-        lastName: [''],
-        email: [''],
+        firstName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+        ]),
+        lastName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+        ]),
+        email: new FormControl('', [
+          Validators.required,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ]),
       }),
       shippingAdress: this.formBuilder.group({
         street: [''],
@@ -61,6 +80,22 @@ export class CheckoutComponent implements OnInit {
     this.luvToShopFormService
       .getCreditCardMonths(startMonth)
       .subscribe((data) => (this.creditCardMonths = data));
+    this.luvToShopFormService
+      .getCountries()
+      .subscribe((data) => (this.countries = data));
+    this.luvToShopFormService
+      .getAllStates()
+      .subscribe((data) => (this.states = data));
+  }
+
+  get firstName() {
+    return this.checkoutFormGroup.get('customer.firstName');
+  }
+  get lastName() {
+    return this.checkoutFormGroup.get('customer.lastName');
+  }
+  get email() {
+    return this.checkoutFormGroup.get('customer.email');
   }
 
   copyShippingAddressToBillingAddress(event) {
@@ -100,8 +135,29 @@ export class CheckoutComponent implements OnInit {
       });
   }
 
+  getStates(formGroupName: string) {
+    const formGroup = this.checkoutFormGroup.get(formGroupName);
+
+    const countryCode = formGroup.value.country.code;
+    const countryName = formGroup.value.country.name;
+
+    console.log(formGroup);
+
+    this.luvToShopFormService.getStates(countryCode).subscribe((data) => {
+      if (formGroupName === 'shippingAdress') {
+        this.shippingAddressStates = data;
+      } else {
+        this.billingAddressStates = data;
+      }
+    });
+  }
+
   onSubmit() {
     console.log('Handling the submit button');
+
+    if (this.checkoutFormGroup.invalid) {
+      this.checkoutFormGroup.markAllAsTouched();
+    }
 
     console.log(this.checkoutFormGroup.get('customer')?.value);
   }

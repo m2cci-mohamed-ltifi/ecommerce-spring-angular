@@ -4,7 +4,6 @@ import com.sop2steria.springbootecommerce.entity.Country;
 import com.sop2steria.springbootecommerce.entity.Product;
 import com.sop2steria.springbootecommerce.entity.ProductCategory;
 import com.sop2steria.springbootecommerce.entity.State;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -22,7 +21,6 @@ import java.util.Set;
 public class MyDataRestConfig implements RepositoryRestConfigurer {
 
     private EntityManager entityManager;
-
 
     @Autowired
     public MyDataRestConfig(EntityManager theEntityManager){
