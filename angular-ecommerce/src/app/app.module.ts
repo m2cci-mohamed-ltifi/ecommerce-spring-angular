@@ -14,6 +14,8 @@ import { ProductDetailsComponent } from './Components/product-details/product-de
 import { CartDetailsComponent } from './Components/cart-details/cart-details.component';
 import { CartStatusComponent } from './Components/cart-status/cart-status.component';
 import { CheckoutComponent } from './Components/checkout/checkout.component';
+import { LoginComponent } from './components/login/login.component';
+import { LoginStatusComponent } from './components/login-status/login-status.component';
 
 const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent },
@@ -36,6 +38,8 @@ const routes: Routes = [
     CartStatusComponent,
     CartDetailsComponent,
     CheckoutComponent,
+    LoginComponent,
+    LoginStatusComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
