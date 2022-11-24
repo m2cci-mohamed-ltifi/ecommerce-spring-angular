@@ -4,20 +4,32 @@ import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
-
-import { AppComponent } from './app.component';
+import {
+  OktaCallbackComponent,
+  OktaAuthModule,
+  OKTA_CONFIG,
+} from '@okta/okta-angular';
+import { LoginComponent } from './Components/login/login.component';
+import { CheckoutComponent } from './Components/checkout/checkout.component';
+import { CartDetailsComponent } from './Components/cart-details/cart-details.component';
+import { ProductDetailsComponent } from './Components/product-details/product-details.component';
 import { ProductListComponent } from './Components/product-list/product-list.component';
-import { ProductService } from './services/product.service';
+import { AppComponent } from './app.component';
 import { ProductCategoryMenuComponent } from './Components/product-category-menu/product-category-menu.component';
 import { SearchComponent } from './Components/search/search.component';
-import { ProductDetailsComponent } from './Components/product-details/product-details.component';
-import { CartDetailsComponent } from './Components/cart-details/cart-details.component';
 import { CartStatusComponent } from './Components/cart-status/cart-status.component';
-import { CheckoutComponent } from './Components/checkout/checkout.component';
-import { LoginComponent } from './components/login/login.component';
-import { LoginStatusComponent } from './components/login-status/login-status.component';
+import { LoginStatusComponent } from './Components/login-status/login-status.component';
+import { ProductService } from './services/product.service';
+import myAppConfig from './config/my-app-config';
+import { OktaAuth } from '@okta/okta-auth-js';
+
+const oktaConfig = myAppConfig.oidc;
+
+const oktaAuth = new OktaAuth(oktaConfig);
 
 const routes: Routes = [
+  { path: 'login/callback', component: OktaCallbackComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'cart-details', component: CartDetailsComponent },
   { path: 'products/:id', component: ProductDetailsComponent },
@@ -47,8 +59,9 @@ const routes: Routes = [
     HttpClientModule,
     NgbModule,
     ReactiveFormsModule,
+    OktaAuthModule,
   ],
-  providers: [ProductService],
+  providers: [ProductService, { provide: OKTA_CONFIG, useValue: { oktaAuth } }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
