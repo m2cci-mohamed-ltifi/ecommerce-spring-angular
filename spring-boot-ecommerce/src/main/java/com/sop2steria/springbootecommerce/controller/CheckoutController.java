@@ -6,7 +6,6 @@ import com.sop2steria.springbootecommerce.dto.Purchase;
 import com.sop2steria.springbootecommerce.dto.PurchaseResponse;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("http://localhost:4200/")
 @RestController
 @RequestMapping("/api/checkout")
 public class CheckoutController {
