@@ -11,7 +11,7 @@ import { State } from '../common/state';
 })
 export class Luv2shopFormService {
   private countriesUrl = environment.luv2shopApiUrl + '/countries';
-  private statesUrl = environment.luv2shopApiUrl + '/api/states';
+  private statesUrl = environment.luv2shopApiUrl + '/states';
 
   constructor(private httpClient: HttpClient) {}
 

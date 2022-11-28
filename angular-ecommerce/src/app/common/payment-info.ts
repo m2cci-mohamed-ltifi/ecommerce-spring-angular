@@ -1,4 +1,4 @@
 export class PaymentInfo {
-  public ammount?: number;
+  public amount?: number;
   public currency?: string;
 }

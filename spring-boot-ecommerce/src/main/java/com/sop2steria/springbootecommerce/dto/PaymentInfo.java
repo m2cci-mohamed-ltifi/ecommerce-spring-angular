@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class PaymentInfo {
-    private int ammount;
+    private int amount;
     private String currency;
 }

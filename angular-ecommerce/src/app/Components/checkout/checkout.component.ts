@@ -329,7 +329,7 @@ export class CheckoutComponent implements OnInit {
     purchase.orderItems = orderIems;
 
     //compute payment
-    this.paymentInfo.ammount = this.totalPrice * 100;
+    this.paymentInfo.amount = Math.floor(this.totalPrice * 100);
     this.paymentInfo.currency = 'USD';
 
     //if the form is valid then
